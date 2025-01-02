@@ -105,23 +105,7 @@ project-root/
 
 - **CORS:** Durante el desarrollo, se configura `Access-Control-Allow-Origin` como `*`. En producción, restringe los dominios permitidos.
 - **Seguridad:**
-  - No publiques claves sensibles en el cliente.
-  - Usa HTTPS en producción para proteger los datos.
-- **Depuración:** Utiliza herramientas como Postman para probar el endpoint `/api/payment` y verificar la integración con la pasarela de pagos.
-
-## Próximos Pasos
-
-- Implementar un sistema de confirmación de pagos.
-- Mejorar el manejo de errores con notificaciones más claras para los usuarios.
-- Realizar pruebas con usuarios para garantizar una experiencia fluida.
-
----
-
-## Licencia
-
-Este proyecto está bajo la licencia MIT. Puedes usarlo y modificarlo libremente, pero bajo tu propio riesgo.
-
----
-
-¡Gracias por usar nuestra tienda! Si tienes preguntas, no dudes en contactar con el equipo de desarrollo. 😊
+  - No se publicaron claves sensibles en el cliente.
+  - Use HTTPS en producción para proteger los datos.
+- **Depuración:** Utilice herramientas como Postman para probar el endpoint `/api/payment` y verificar la integración con la pasarela de pagos.
 
