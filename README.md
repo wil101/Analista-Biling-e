@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tienda de Productos - Integración con Pasarela de Pagos
 
-## Getting Started
+Este proyecto es una aplicación web desarrollada con **Next.js** y **TypeScript** que permite a los usuarios comprar productos a través de una pasarela de pagos. A continuación, se describe cómo configurar y ejecutar el proyecto, así como los aspectos técnicos relevantes.
 
-First, run the development server:
+## Requisitos Previos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js (versión 16 o superior).
+- npm o yarn.
+- Claves de acceso para la pasarela de pagos (proporcionadas por el servicio de pagos que estás utilizando).
+
+## Configuración Inicial
+
+### Variables de Entorno
+
+Crea un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno:
+
+```plaintext
+NEXT_PUBLIC_LOGIN=your_login
+NEXT_PUBLIC_SECRETKEY=your_secret_key
+NEXT_PUBLIC_SERVICE=https://example-payment-service.com/api
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `NEXT_PUBLIC_LOGIN`: Identificador de acceso para la pasarela de pagos.
+- `NEXT_PUBLIC_SECRETKEY`: Clave secreta proporcionada por el servicio de pagos.
+- `NEXT_PUBLIC_SERVICE`: URL del servicio de pagos para procesar las solicitudes.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> **Nota:** Asegúrate de mantener estas claves confidenciales.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Instalación de Dependencias
 
-## Learn More
+Ejecuta el siguiente comando para instalar las dependencias necesarias:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+O si usas Yarn:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+yarn install
+```
 
-## Deploy on Vercel
+## Estructura del Proyecto
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+project-root/
+├── pages/
+│   ├── api/
+│   │   └── payment.js   # Endpoint para procesar pagos.
+│   └── index.tsx        # Página principal de la tienda.
+├── public/
+├── styles/
+├── .env                 # Archivo de variables de entorno.
+├── package.json         # Configuración del proyecto.
+└── ...
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Ejecución del Proyecto
+
+1. Inicia el servidor de desarrollo:
+
+   ```bash
+   npm run dev
+   ```
+
+   O con Yarn:
+
+   ```bash
+   yarn dev
+   ```
+
+2. Abre tu navegador en [http://localhost:3000](http://localhost:3000) para ver la aplicación.
+
+## Descripción de la Funcionalidad
+
+### Cliente
+
+- **Página Principal (`index.tsx`)**:
+  - Lista de productos disponibles con su descripción, precio e imagen.
+  - Botón "Comprar Ahora" que inicia el proceso de pago al llamar al endpoint `/api/payment`.
+
+### API
+
+- **Ruta `/api/payment`**:
+  - Método: `POST`.
+  - Proceso:
+    1. Recibe los datos del producto enviados por el cliente.
+    2. Genera la autenticación requerida para la pasarela de pagos.
+    3. Envía una solicitud al servicio de pagos con los detalles del producto.
+    4. Devuelve la URL del proceso de pago (`processUrl`) al cliente.
+
+### Flujo de Pago
+
+1. El cliente selecciona un producto y hace clic en "Comprar Ahora".
+2. Se envía una solicitud `POST` a `/api/payment` con los detalles del producto.
+3. Si la solicitud es exitosa, el cliente es redirigido a la URL de la pasarela de pagos.
+
+## Manejo de Errores
+
+- Si las claves de entorno están incompletas o ausentes, el servidor devuelve un error 500.
+- Si la API de la pasarela de pagos responde con un error, este se registra en la consola y se notifica al cliente.
+- Se valida que las respuestas de la API contengan un campo `processUrl`. Si falta, se lanza un error.
+
+## Consideraciones Adicionales
+
+- **CORS:** Durante el desarrollo, se configura `Access-Control-Allow-Origin` como `*`. En producción, restringe los dominios permitidos.
+- **Seguridad:**
+  - No publiques claves sensibles en el cliente.
+  - Usa HTTPS en producción para proteger los datos.
+- **Depuración:** Utiliza herramientas como Postman para probar el endpoint `/api/payment` y verificar la integración con la pasarela de pagos.
+
+## Próximos Pasos
+
+- Implementar un sistema de confirmación de pagos.
+- Mejorar el manejo de errores con notificaciones más claras para los usuarios.
+- Realizar pruebas con usuarios para garantizar una experiencia fluida.
+
+---
+
+## Licencia
+
+Este proyecto está bajo la licencia MIT. Puedes usarlo y modificarlo libremente, pero bajo tu propio riesgo.
+
+---
+
+¡Gracias por usar nuestra tienda! Si tienes preguntas, no dudes en contactar con el equipo de desarrollo. 😊
+
